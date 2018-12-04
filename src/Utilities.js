@@ -2,6 +2,7 @@
 /// Common Utilities
 ///
 
+const DateTimeFormatter = imports.misc.extensionUtils.getCurrentExtension().imports.DateTimeFormatter;
 const Gtk = imports.gi.Gtk;
 
 ///
@@ -12,7 +13,11 @@ const Gtk = imports.gi.Gtk;
 /// @return {string} Datetime representation of format, or format if the conversion fails, or datetime representation of defaultFormat, or blank.
 ///
 function dateTimeFormat(format, defaultFormat) {
-	return (format && new Date().toLocaleFormat(format) || format) || defaultFormat && new Date().toLocaleFormat(defaultFormat) || "";
+    if (format) {
+	return DateTimeFormatter.dateToString(format);
+    } else {
+	return DateTimeFormatter.dateToString(defaultFormat);
+    }
 }
 
 ///
