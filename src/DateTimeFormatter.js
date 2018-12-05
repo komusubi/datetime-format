@@ -1,7 +1,54 @@
 ///
-/// Convert Date objects into a string according to a specified format
+/// Convert Date objects into a string according to a specified format.
+///
+/// The dateToString(format, date) function in this file replaces the
+/// Date.toLocaleFormat() method which has been removed in recent
+/// versions of JavaScript.
+///
+/// See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleFormat
+///
+/// However, dateToString(format, date) does not currently (and
+/// probably never will) replicate all the features of the old
+/// Date.toLocaleFormat().
+///
+/// The following format control codes have not been implemented:
+///
+/// %C = Century number
+/// %G = ISO 8601 week-based year with century
+/// %g = Same as G with 2 digit year
+/// %U = Week number 00-53 Sunday based
+/// %V = ISO 8601 week number 01-53
+/// %W = Week number 00-53 Monday based
+/// %j = Day of the year 001-366
+/// %u = Day of the week 1-7
+/// %z = Timezone +/-hhmm
+/// %Z = Timezone name or abbreviation
+/// %n = Newline
+/// %t = Tab
+/// %% = %
+/// _ = Space pad numeric result 
+/// - = Do not pad numeric result
+/// 0 = Zero pad numeric result
+/// ^ = Convert alphabetic characters to upper case
+/// # = Swap the case
+/// 1, 2, ... = Decimal width specifier
+/// E, O = Alternative format specifier
+///
+/// Some extra format control codes have been implemented:
+///
+/// %f = Day of the month 1-31 not zero or space padded
 ///
 
+///
+/// Convert a JavaScript Date object to a formatted string.
+///
+/// @param {string} format - The format string.
+/// @param {Date} date - The date to convert, defaults to Date representation of now.
+/// @return {string} The formatted date string.
+/// @todo Implement more control codes, e.g. Timezones.
+/// @todo Reorder switch so commonest codes are at the top.
+/// @todo Consider a refactor where we "compile" a date format which is stored and eval'ed.
+///
 function dateToString(format, date = new Date()) {
     const LENGTH = format.length;
     let i = 0;
@@ -72,7 +119,9 @@ function dateToString(format, date = new Date()) {
 		output += date.getDate().toString().padStart(2, '0');
 		break;
 	    case 'e':
-		//output += date.getDate().toString().padStart(2, ' ');
+		output += date.getDate().toString().padStart(2, ' ');
+		break;
+	    case 'f':
 		output += date.getDate();
 		break;
 	    case 'k':
@@ -120,6 +169,13 @@ function dateToString(format, date = new Date()) {
     return output;
 }
 
+///
+/// Get the full weekday name.
+///
+/// @param {number} dayAsInt - Weekday as an integer where: 0=Sunday, ..., 6=Saturday.
+/// @return {string} Full weekday e.g. Sunday, Monday, etc.
+/// @todo Return localised strings.
+///
 function _getWeekdayLong(dayAsInt) {
     switch(dayAsInt) {
     case 0:
@@ -148,6 +204,13 @@ function _getWeekdayLong(dayAsInt) {
     }
 }
 
+///
+/// Get an abbreviated weekday name.
+///
+/// @param {number} dayAsInt - Weekday as an integer where: 0=Sun, ..., 6=Sat.
+/// @return {string} Abbreviated weekday e.g. Sun, Mon, etc.
+/// @todo Return localised strings.
+///
 function _getWeekdayShort(dayAsInt) {
     switch(dayAsInt) {
     case 0:
@@ -176,6 +239,13 @@ function _getWeekdayShort(dayAsInt) {
     }
 }
 
+///
+/// Get the full month name.
+///
+/// @param {number} monthAsInt - Month as an integer where: 0=January, ..., 11=December.
+/// @return {string} Full month e.g. January, February, etc.
+/// @todo Return localised strings.
+///
 function _getMonthLong(monthAsInt) {
     switch(monthAsInt) {
     case 0:
@@ -219,6 +289,13 @@ function _getMonthLong(monthAsInt) {
     }
 }
 
+///
+/// Get the abbreviated month name.
+///
+/// @param {number} monthAsInt - Month as an integer where: 0=January, ..., 11=December.
+/// @return {string} Abbreviated month e.g. Jan, Feb, etc.
+/// @todo Return localised strings.
+///
 function _getMonthShort(monthAsInt) {
     switch(monthAsInt) {
     case 0:
@@ -262,6 +339,13 @@ function _getMonthShort(monthAsInt) {
     }
 }
 
+///
+/// Get the 12-hour clock hour.
+///
+/// @param {number} hourAsInt - The hour in 24-hour clock style.
+/// @return {number} Hour in 12-hour clock style.
+/// @todo Return localised strings.
+///
 function _get12Hour(hourAsInt) {
     if (hourAsInt > 12) {
 	return hourAsInt - 12;
