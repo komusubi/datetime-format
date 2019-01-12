@@ -21,7 +21,6 @@
 /// %W = Week number 00-53 Monday based
 /// %j = Day of the year 001-366
 /// %u = Day of the week 1-7
-/// %z = Timezone +/-hhmm
 /// %Z = Timezone name or abbreviation
 /// %n = Newline
 /// %t = Tab
@@ -154,6 +153,10 @@ function dateToString(format, date = new Date()) {
                 break;
             case 'y':
                 output += date.getFullYear().toString().slice(-2);
+                break;
+            case 'z':
+                let timeoffset = date.toString().match(/([-\+][0-9]+)\s/)[1];
+                output += timeoffset;
                 break;
             default:
                 output += '%' + format.charAt(i);
