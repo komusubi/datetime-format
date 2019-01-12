@@ -131,7 +131,8 @@ function dateToString(format, date = new Date()) {
                 output += _get12Hour(date.getHours())
                 break;
             case 'm':
-                output += date.getMonth().toString().padStart(2, '0');
+                let month = date.getMonth() + 1;
+                output += month.toString().padStart(2, '0');
                 break;
             case 'p':
                 output =+ (date.getHours() < 12) ? 'AM' : 'PM';
