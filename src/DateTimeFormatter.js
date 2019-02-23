@@ -106,7 +106,7 @@ function dateToString(format, date = new Date()) {
                 output += date.getFullYear();
                 break;
             case 'a':
-                output += _getWeekdayShort(date.getDay())
+                output += _getWeekdayShort('ja', date.getDay())
                 break;
             case 'b':
                 output += _getMonthShort(date.getMonth());
@@ -215,7 +215,46 @@ function _getWeekdayLong(dayAsInt) {
 /// @return {string} Abbreviated weekday e.g. Sun, Mon, etc.
 /// @todo Return localised strings.
 ///
-function _getWeekdayShort(dayAsInt) {
+function _getWeekdayShort(locale, dayAsInt) {
+  switch(locale) {
+    case 'ja':
+      return _getWeekdayShortJa(dayAsInt);
+    case 'en':
+      return _getWeekdayShortEn(dayAsInt);
+    default:
+      return 'Illegal value for weekday locale';
+  }
+}
+
+function _getWeekdayShortJa(dayAsInt) {
+    switch(dayAsInt) {
+    case 0:
+        return '日';
+
+    case 1:
+        return '月';
+
+    case 2:
+        return '火';
+
+    case 3:
+        return '水';
+
+    case 4:
+        return '木';
+
+    case 5:
+        return '金';
+
+    case 6:
+        return '土';
+
+    default:
+        throw 'Illegal value for dayAsInt.' 
+    }
+}
+
+function _getWeekdayShortEn(dayAsInt) {
     switch(dayAsInt) {
     case 0:
         return 'Sun';
